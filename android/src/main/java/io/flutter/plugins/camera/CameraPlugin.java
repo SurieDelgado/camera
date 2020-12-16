@@ -73,6 +73,23 @@ public final class CameraPlugin implements FlutterPlugin, ActivityAware {
         flutterPluginBinding.getTextureRegistry());
   }
 
+private void stopVideoRecording(@NonNull final Result result) {
+      if (!recordingVideo) {
+        result.success(null);
+        return;
+      }
+
+      try {
+        recordingVideo = false;
+        mediaRecorder.stop();
+        mediaRecorder.reset();
+        //startPreview();
+        result.success(null);
+      } catch ( IllegalStateException e) {
+        result.error("videoRecordingFailed", e.getMessage(), null);
+      }
+    }
+
   @Override
   public void onDetachedFromActivity() {
     if (methodCallHandler == null) {
